@@ -70,7 +70,7 @@ final class BalanceViewModel: ObservableObject {
     }
 
     var distanceFromEvenLine: String {
-        let distance = Int((abs(balanceRatio - 0.5) * 200).rounded())
+        let distance = Int(abs(balanceRatio - 0.5) * 200)
         return "Distance from even: \(distance)%"
     }
 
