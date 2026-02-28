@@ -12,6 +12,11 @@ struct BalanceRingView: View {
 
     var body: some View {
         ZStack {
+            Rectangle()
+                .fill(Color.white.opacity(0.1))
+                .frame(width: 1, height: size - lineWidth - 14)
+                .blur(radius: 0.25)
+
             Circle()
                 .stroke(Color.white.opacity(0.08), lineWidth: lineWidth)
 

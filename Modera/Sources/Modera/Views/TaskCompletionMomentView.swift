@@ -2,14 +2,16 @@ import SwiftUI
 
 struct TaskCompletionMomentView: View {
     @ObservedObject var viewModel: BalanceViewModel
+    let completedBy: EffortSide
 
     @State private var displayRatio: Double
     @State private var pulseOpacity: Double = 0
     @State private var didRunSequence = false
     @State private var showImpactText = false
 
-    init(viewModel: BalanceViewModel) {
+    init(viewModel: BalanceViewModel, completedBy: EffortSide) {
         self.viewModel = viewModel
+        self.completedBy = completedBy
         _displayRatio = State(initialValue: viewModel.balanceRatio)
     }
 
@@ -47,12 +49,10 @@ struct TaskCompletionMomentView: View {
         guard !didRunSequence else { return }
         didRunSequence = true
 
-        let adjustedLeft = max(50, viewModel.leftEffort - 3)
-        let adjustedRight = min(50, viewModel.rightEffort + 3)
-        let targetRatio = adjustedLeft / (adjustedLeft + adjustedRight)
+        let projection = viewModel.applyTaskImpact(by: completedBy)
 
         withAnimation(ModeraMotion.settle) {
-            displayRatio = targetRatio
+            displayRatio = projection.balanceRatio
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -72,14 +72,12 @@ struct TaskCompletionMomentView: View {
                     pulseOpacity = 0
                 }
             }
-
-            viewModel.applyTaskImpact()
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        TaskCompletionMomentView(viewModel: BalanceViewModel())
+        TaskCompletionMomentView(viewModel: BalanceViewModel(), completedBy: .left)
     }
 }

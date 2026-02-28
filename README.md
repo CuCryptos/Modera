@@ -12,7 +12,7 @@ This folder contains a SwiftUI iOS prototype for **Modera** focused on motion an
 
 ## Run in Xcode
 
-1. Open `/Users/curtisvaughan/Modera/Modera.xcodeproj` in Xcode.
+1. Open `Modera.xcodeproj` in Xcode.
 2. Select the `Modera` scheme.
 3. Choose an iOS Simulator target (iOS 17+ recommended).
 4. Build and run.

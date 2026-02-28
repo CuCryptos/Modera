@@ -24,10 +24,21 @@ struct HomeBalanceView: View {
                     Text(viewModel.descriptor)
                         .font(.headline)
                         .foregroundStyle(.white.opacity(0.85))
+
+                    Text(viewModel.effortSplitLine)
+                        .font(.footnote)
+                        .foregroundStyle(.white.opacity(0.66))
+
+                    Text(viewModel.distanceFromEvenLine)
+                        .font(.footnote)
+                        .foregroundStyle(.white.opacity(0.66))
                 }
 
                 NavigationLink {
-                    TaskCompletionMomentView(viewModel: viewModel)
+                    TaskCompletionMomentView(
+                        viewModel: viewModel,
+                        completedBy: viewModel.selectedCompletionSide
+                    )
                 } label: {
                     Text("Complete Sample Task")
                         .font(.headline)
@@ -38,6 +49,13 @@ struct HomeBalanceView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 }
                 .buttonStyle(.plain)
+
+                Picker("Completed by", selection: $viewModel.selectedCompletionSide) {
+                    ForEach(EffortSide.allCases) { side in
+                        Text(side.label).tag(side)
+                    }
+                }
+                .pickerStyle(.segmented)
 
                 NavigationLink {
                     WeeklyResetView(viewModel: viewModel)

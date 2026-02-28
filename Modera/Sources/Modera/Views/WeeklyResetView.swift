@@ -1,5 +1,10 @@
 import SwiftUI
 
+private enum ReflectionPrompt {
+    case steady
+    case shift
+}
+
 struct WeeklyResetView: View {
     @ObservedObject var viewModel: BalanceViewModel
     @Environment(\.dismiss) private var dismiss
@@ -7,6 +12,7 @@ struct WeeklyResetView: View {
     @State private var reflectTogether = false
     @State private var steadyNote = ""
     @State private var shiftNote = ""
+    @State private var activePrompt: ReflectionPrompt?
     @State private var displayRatio: Double
     @State private var isResetting = false
 
@@ -31,6 +37,14 @@ struct WeeklyResetView: View {
                         .font(.headline)
                         .foregroundStyle(.white.opacity(0.9))
 
+                    Text(viewModel.effortSplitLine)
+                        .font(.footnote)
+                        .foregroundStyle(.white.opacity(0.66))
+
+                    Text(viewModel.distanceFromEvenLine)
+                        .font(.footnote)
+                        .foregroundStyle(.white.opacity(0.66))
+
                     Text(viewModel.weeklyRecapLine)
                         .font(.subheadline)
                         .foregroundStyle(.white.opacity(0.75))
@@ -40,6 +54,9 @@ struct WeeklyResetView: View {
                     Button {
                         withAnimation(ModeraMotion.micro) {
                             reflectTogether.toggle()
+                            if !reflectTogether {
+                                activePrompt = nil
+                            }
                         }
                     } label: {
                         Text("Reflect together")
@@ -54,20 +71,35 @@ struct WeeklyResetView: View {
 
                     if reflectTogether {
                         VStack(alignment: .leading, spacing: 12) {
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text("What felt steady this week?")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.white.opacity(0.9))
-                                TextField("Optional note", text: $steadyNote)
-                                    .textFieldStyle(.roundedBorder)
+                            HStack(spacing: 10) {
+                                promptChip(
+                                    title: "Steady: ___",
+                                    prompt: .steady
+                                )
+                                promptChip(
+                                    title: "Shift: ___",
+                                    prompt: .shift
+                                )
                             }
 
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text("What could shift next week?")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.white.opacity(0.9))
-                                TextField("Optional note", text: $shiftNote)
-                                    .textFieldStyle(.roundedBorder)
+                            if activePrompt == .steady {
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text("What felt steady this week?")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.white.opacity(0.9))
+                                    TextField("Optional note", text: $steadyNote)
+                                        .textFieldStyle(.roundedBorder)
+                                }
+                            }
+
+                            if activePrompt == .shift {
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text("What could shift next week?")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.white.opacity(0.9))
+                                    TextField("Optional note", text: $shiftNote)
+                                        .textFieldStyle(.roundedBorder)
+                                }
                             }
                         }
                         .transition(.opacity.combined(with: .move(edge: .top)))
@@ -108,10 +140,30 @@ struct WeeklyResetView: View {
             shiftNote = ""
             withAnimation(ModeraMotion.micro) {
                 reflectTogether = false
+                activePrompt = nil
             }
             isResetting = false
             dismiss()
         }
+    }
+
+    private func promptChip(title: String, prompt: ReflectionPrompt) -> some View {
+        Button {
+            withAnimation(ModeraMotion.micro) {
+                activePrompt = activePrompt == prompt ? nil : prompt
+            }
+        } label: {
+            Text(title)
+                .font(.subheadline.weight(.medium))
+                .foregroundStyle(.white.opacity(0.86))
+                .padding(.vertical, 8)
+                .padding(.horizontal, 12)
+                .background(
+                    (activePrompt == prompt ? Color.white.opacity(0.2) : Color.white.opacity(0.1))
+                )
+                .clipShape(Capsule())
+        }
+        .buttonStyle(.plain)
     }
 }
 
