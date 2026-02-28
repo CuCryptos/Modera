@@ -35,7 +35,7 @@ final class BalanceViewModel: ObservableObject {
     @Published var selectedCompletionSide: EffortSide = .left
 
     private let impactIncrement: Double = 4
-    private let recalibrationFactor: Double = 0.12
+    private let recalibrationFactor: Double = 0.07
 
     var balanceRatio: Double {
         let total = leftEffort + rightEffort
@@ -70,7 +70,7 @@ final class BalanceViewModel: ObservableObject {
     }
 
     var distanceFromEvenLine: String {
-        let distance = Int(abs(leftEffort - rightEffort).rounded())
+        let distance = Int((abs(balanceRatio - 0.5) * 200).rounded())
         return "Distance from even: \(distance)%"
     }
 
