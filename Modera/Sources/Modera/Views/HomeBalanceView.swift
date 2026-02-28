@@ -37,10 +37,11 @@ struct HomeBalanceView: View {
                 NavigationLink {
                     TaskCompletionMomentView(
                         viewModel: viewModel,
-                        completedBy: viewModel.selectedCompletionSide
+                        completedBy: viewModel.selectedCompletionSide,
+                        task: viewModel.selectedTask
                     )
                 } label: {
-                    Text("Complete Sample Task")
+                    Text("Complete \(viewModel.selectedTask.title)")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 15)
@@ -50,12 +51,43 @@ struct HomeBalanceView: View {
                 }
                 .buttonStyle(.plain)
 
+                Picker("Task Type", selection: $viewModel.selectedTask) {
+                    ForEach(TaskTemplate.allCases) { task in
+                        Text(task.title).tag(task)
+                    }
+                }
+                .pickerStyle(.menu)
+                .tint(.white.opacity(0.85))
+
                 Picker("Completed by", selection: $viewModel.selectedCompletionSide) {
                     ForEach(EffortSide.allCases) { side in
                         Text(side.label).tag(side)
                     }
                 }
                 .pickerStyle(.segmented)
+
+                if !viewModel.recentHistory.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("This week")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.white.opacity(0.8))
+
+                        ForEach(viewModel.recentHistory) { event in
+                            HStack {
+                                Text("\(event.side.label) · \(event.task.title)")
+                                    .font(.footnote)
+                                    .foregroundStyle(.white.opacity(0.78))
+                                Spacer()
+                                Text(event.timestamp.formatted(date: .omitted, time: .shortened))
+                                    .font(.footnote)
+                                    .foregroundStyle(.white.opacity(0.55))
+                            }
+                        }
+                    }
+                    .padding(12)
+                    .background(Color.white.opacity(0.06))
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                }
 
                 NavigationLink {
                     WeeklyResetView(viewModel: viewModel)

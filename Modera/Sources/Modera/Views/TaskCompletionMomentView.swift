@@ -3,15 +3,17 @@ import SwiftUI
 struct TaskCompletionMomentView: View {
     @ObservedObject var viewModel: BalanceViewModel
     let completedBy: EffortSide
+    let task: TaskTemplate
 
     @State private var displayRatio: Double
     @State private var pulseOpacity: Double = 0
     @State private var didRunSequence = false
     @State private var showImpactText = false
 
-    init(viewModel: BalanceViewModel, completedBy: EffortSide) {
+    init(viewModel: BalanceViewModel, completedBy: EffortSide, task: TaskTemplate) {
         self.viewModel = viewModel
         self.completedBy = completedBy
+        self.task = task
         _displayRatio = State(initialValue: viewModel.balanceRatio)
     }
 
@@ -28,7 +30,7 @@ struct TaskCompletionMomentView: View {
                 )
 
                 if showImpactText {
-                    Text("Impact recorded")
+                    Text("\(task.title) recorded")
                         .font(.subheadline)
                         .foregroundStyle(ModeraStyle.recognitionText)
                         .transition(.opacity)
@@ -49,7 +51,7 @@ struct TaskCompletionMomentView: View {
         guard !didRunSequence else { return }
         didRunSequence = true
 
-        let projection = viewModel.applyTaskImpact(by: completedBy)
+        let projection = viewModel.applyTaskImpact(by: completedBy, task: task)
 
         withAnimation(ModeraMotion.settle) {
             displayRatio = projection.balanceRatio
@@ -78,6 +80,10 @@ struct TaskCompletionMomentView: View {
 
 #Preview {
     NavigationStack {
-        TaskCompletionMomentView(viewModel: BalanceViewModel(), completedBy: .left)
+        TaskCompletionMomentView(
+            viewModel: BalanceViewModel(),
+            completedBy: .left,
+            task: .checkIn
+        )
     }
 }

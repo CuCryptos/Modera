@@ -10,8 +10,6 @@ struct WeeklyResetView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var reflectTogether = false
-    @State private var steadyNote = ""
-    @State private var shiftNote = ""
     @State private var activePrompt: ReflectionPrompt?
     @State private var displayRatio: Double
     @State private var isResetting = false
@@ -93,7 +91,7 @@ struct WeeklyResetView: View {
                                     Text("What felt steady this week?")
                                         .font(.subheadline)
                                         .foregroundStyle(.white.opacity(0.9))
-                                    TextField("Optional note", text: $steadyNote)
+                                    TextField("Optional note", text: $viewModel.currentWeekSteadyNote)
                                         .textFieldStyle(.roundedBorder)
                                 }
                             }
@@ -103,7 +101,7 @@ struct WeeklyResetView: View {
                                     Text("What could shift next week?")
                                         .font(.subheadline)
                                         .foregroundStyle(.white.opacity(0.9))
-                                    TextField("Optional note", text: $shiftNote)
+                                    TextField("Optional note", text: $viewModel.currentWeekShiftNote)
                                         .textFieldStyle(.roundedBorder)
                                 }
                             }
@@ -142,8 +140,6 @@ struct WeeklyResetView: View {
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.15) {
             viewModel.beginNewWeek()
-            steadyNote = ""
-            shiftNote = ""
             withAnimation(ModeraMotion.micro) {
                 reflectTogether = false
                 activePrompt = nil

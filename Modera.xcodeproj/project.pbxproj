@@ -15,6 +15,7 @@
 		A1B2C3D4E5F60718293A0006 /* HomeBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A1006 /* HomeBalanceView.swift */; };
 		A1B2C3D4E5F60718293A0007 /* TaskCompletionMomentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A1007 /* TaskCompletionMomentView.swift */; };
 		A1B2C3D4E5F60718293A0008 /* WeeklyResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A1008 /* WeeklyResetView.swift */; };
+		A1B2C3D4E5F60718293A0009 /* LandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A1010 /* LandingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		A1B2C3D4E5F60718293A1007 /* TaskCompletionMomentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCompletionMomentView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60718293A1008 /* WeeklyResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyResetView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60718293A1009 /* Modera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Modera.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3D4E5F60718293A1010 /* LandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 				A1B2C3D4E5F60718293A1006 /* HomeBalanceView.swift */,
 				A1B2C3D4E5F60718293A1007 /* TaskCompletionMomentView.swift */,
 				A1B2C3D4E5F60718293A1008 /* WeeklyResetView.swift */,
+				A1B2C3D4E5F60718293A1010 /* LandingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 				A1B2C3D4E5F60718293A0006 /* HomeBalanceView.swift in Sources */,
 				A1B2C3D4E5F60718293A0007 /* TaskCompletionMomentView.swift in Sources */,
 				A1B2C3D4E5F60718293A0008 /* WeeklyResetView.swift in Sources */,
+				A1B2C3D4E5F60718293A0009 /* LandingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
