@@ -33,6 +33,7 @@ final class BalanceViewModel: ObservableObject {
     @Published var leftEffort: Double = 55
     @Published var rightEffort: Double = 45
     @Published var selectedCompletionSide: EffortSide = .left
+    @Published private(set) var lastWeekScore: Int? = 76
 
     private let impactIncrement: Double = 4
     private let recalibrationFactor: Double = 0.07
@@ -63,6 +64,25 @@ final class BalanceViewModel: ObservableObject {
 
     var weeklyRecapLine: String {
         "Small, consistent adjustments kept your week centered."
+    }
+
+    var weekToWeekDeltaLine: String? {
+        guard let lastWeekScore else { return nil }
+        let delta = balanceScore - lastWeekScore
+
+        if delta >= 3 {
+            return "More stable than last week (+\(delta))"
+        }
+        if delta > 0 {
+            return "+\(delta) vs last week"
+        }
+        if delta == 0 {
+            return "About the same as last week"
+        }
+        if delta <= -3 {
+            return "Less stable than last week (\(delta))"
+        }
+        return "\(delta) vs last week"
     }
 
     var effortSplitLine: String {
@@ -108,6 +128,7 @@ final class BalanceViewModel: ObservableObject {
     }
 
     func beginNewWeek() {
+        lastWeekScore = balanceScore
         leftEffort = 50
         rightEffort = 50
     }

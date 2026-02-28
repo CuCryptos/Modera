@@ -51,6 +51,12 @@ struct WeeklyResetView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 6)
 
+                    if let deltaLine = viewModel.weekToWeekDeltaLine {
+                        Text(deltaLine)
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(.white.opacity(0.82))
+                    }
+
                     Button {
                         withAnimation(ModeraMotion.micro) {
                             reflectTogether.toggle()
