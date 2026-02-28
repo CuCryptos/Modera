@@ -10,8 +10,17 @@ struct BalanceRingView: View {
         min(max(balanceRatio, 0), 1)
     }
 
+    private var harmony: Double {
+        max(0, 1 - abs(clampedRatio - 0.5) * 2)
+    }
+
     var body: some View {
         ZStack {
+            Circle()
+                .fill(ModeraStyle.ringPrimary.opacity(0.12 * harmony))
+                .frame(width: size * 0.52, height: size * 0.52)
+                .blur(radius: 18)
+
             Rectangle()
                 .fill(Color.white.opacity(0.1))
                 .frame(width: 1, height: size - lineWidth - 14)
@@ -40,6 +49,17 @@ struct BalanceRingView: View {
                 .stroke(ModeraStyle.recognition.opacity(pulseOpacity), lineWidth: 6)
                 .scaleEffect(1.06)
                 .blur(radius: 2)
+
+            VStack {
+                Circle()
+                    .fill(Color.white.opacity(0.28))
+                    .frame(width: 4, height: 4)
+                Spacer()
+                Circle()
+                    .fill(Color.white.opacity(0.28))
+                    .frame(width: 4, height: 4)
+            }
+            .frame(height: size - lineWidth + 2)
         }
         .frame(width: size, height: size)
         .animation(ModeraMotion.settle, value: clampedRatio)
